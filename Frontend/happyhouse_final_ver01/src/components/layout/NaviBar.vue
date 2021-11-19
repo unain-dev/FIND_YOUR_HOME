@@ -52,8 +52,8 @@
                 >
                 <b-nav-item href="#"
                   ><router-link :to="{ name: 'House' }" class="link"
-                    ><b-icon icon="house-fill" font-scale="1"></b-icon> Apart
-                    Information</router-link
+                    ><b-icon icon="house-fill" font-scale="1"></b-icon>
+                    Apartment</router-link
                   ></b-nav-item
                 >
 

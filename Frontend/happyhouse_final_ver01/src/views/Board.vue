@@ -1,6 +1,6 @@
 <template>
   <b-container class="bv-example-row mt-3 text-center container">
-    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon> Q&amp;A</h3>
+    <h2 class="underline-hotpink"><b-icon icon="journals"></b-icon> Q&amp;A</h2>
     <div class="empty-block"></div>
     <router-view></router-view>
   </b-container>
