@@ -41,19 +41,19 @@
                 <b-nav-item href="#"
                   ><router-link :to="{ name: 'Board' }" class="link"
                     ><b-icon icon="journal" font-scale="1"></b-icon>
-                    게시판</router-link
+                    Q&amp;A</router-link
                   ></b-nav-item
                 >
                 <b-nav-item href="#"
                   ><router-link :to="{ name: 'Instargram' }" class="link"
                     ><b-icon icon="instagram" font-scale="1"></b-icon>
-                    인별그램</router-link
+                    SNS</router-link
                   ></b-nav-item
                 >
                 <b-nav-item href="#"
                   ><router-link :to="{ name: 'House' }" class="link"
-                    ><b-icon icon="house-fill" font-scale="1"></b-icon>
-                    아파트정보</router-link
+                    ><b-icon icon="house-fill" font-scale="1"></b-icon> Apart
+                    Information</router-link
                   ></b-nav-item
                 >
 
@@ -66,7 +66,7 @@
                       "
                     ></b-avatar
                     >{{ userInfo.username }}({{ userInfo.userid }})님
-                    환영합니다.</b-nav-item
+                    Welcome!</b-nav-item
                   >
                   <b-nav-item class="align-self-center"
                     ><router-link
