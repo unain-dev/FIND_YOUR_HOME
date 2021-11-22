@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -17,6 +18,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -38,6 +42,7 @@ public class AptApi {
 	static final String DEAL_YMD = "202110";		// 계약월
 	
 	static final String GEO_API_KEY = "AIzaSyAL3eeb9P6jIliDv3dF5pox4z3HmhnJebo";
+	static final String KAKAO_MAP_API_KEY = "cfe77a3882d48223692d447d99eb8180";		// rest api key
 	
 	private static AptApi aptApi = new AptApi();
 	
@@ -96,21 +101,32 @@ public class AptApi {
 					apt.setFloor(Integer.parseInt(node.getTextContent()));
 				
 			}
+			StringBuilder sb = new StringBuilder();
+			String address = sb.append(apt.getDongName().trim()).append("+").append(apt.getJibun()).toString();
+			NodeList geoList = xmlParsing(getCoordination(address), "//documents");
+			if (geoList.item(0) != null) {
+				geoList = geoList.item(0).getChildNodes();
+//				NodeList geoList = xmlParsing(getGeoCode(address), "//geometry").item(0).getChildNodes();
+				for (int j = 0; j < geoList.getLength(); j++) {
+					Node geo = geoList.item(j);
+					
+					if ("y".equals(geo.getNodeName()))
+						apt.setLat(geo.getTextContent());
+					else if ("x".equals(geo.getNodeName()))
+						apt.setLng(geo.getTextContent());
+				}
+			}
+			
 //			StringBuilder sb = new StringBuilder();
 //			String address = sb.append(apt.getDongName().trim()).append("+").append(apt.getAptName()).toString();
-//			NodeList geoList = xmlParsing(getGeoCode(address), "//geometry/location");
-//			if (geoList.item(0) != null) {
-//				geoList = geoList.item(0).getChildNodes();
-////				NodeList geoList = xmlParsing(getGeoCode(address), "//geometry").item(0).getChildNodes();
-//				for (int j = 0; j < geoList.getLength(); j++) {
-//					Node geo = geoList.item(j);
-//					
-//					if ("lat".equals(geo.getNodeName()))
-//						apt.setLat(geo.getTextContent());
-//					else if ("lng".equals(geo.getNodeName()))
-//						apt.setLng(geo.getTextContent());
-//				}
-//			}
+//			
+//			JSONObject json = (JSONObject) new JSONParser(getCoordination(address)).parse();
+//			JSONArray jsonDocuments = (JSONArray) json.get( "documents" );
+//			    if( jsonDocuments.length() != 0 ) {
+//				  	JSONObject j = (JSONObject) jsonDocuments.get(0);
+//				  	apt.setLat(( String ) j.get( "y" ));
+//				  	apt.setLat(( String ) j.get( "x" ));
+//			} 
 			
 			aptList.add(apt);
 		}
@@ -206,7 +222,38 @@ public class AptApi {
 		return nodeList;
 	}
 	
-	
+	private String getCoordination( String address ) throws Exception {
+		
+		String encodeAddress = "";  // 한글 주소는 encoding 해서 날려야 함
+		try { encodeAddress = URLEncoder.encode( address, "UTF-8" ); } 
+		catch ( Exception e ) { e.printStackTrace(); }
+		
+		String apiUrl = "https://dapi.kakao.com/v2/local/search/address.xml?query=" 
+	                                                                     + encodeAddress;
+		String auth = "KakaoAK " + KAKAO_MAP_API_KEY;
+		
+		URL url = new URL( apiUrl );
+	    HttpsURLConnection conn = ( HttpsURLConnection ) url.openConnection();
+		conn.setRequestMethod( "GET" );
+	    conn.setRequestProperty( "Authorization", auth );
+	    
+	    BufferedReader br;
+
+	    int responseCode = conn.getResponseCode();
+	    if( responseCode == 200 ) {  // 호출 OK
+	    	br = new BufferedReader( new InputStreamReader(conn.getInputStream(), "UTF-8") );
+	    } else {  // 에러
+	    	br = new BufferedReader( new InputStreamReader(conn.getErrorStream(), "UTF-8") );
+	    }
+	    
+	    String xmlString = new String();
+	    String stringLine;
+	    while ( ( stringLine= br.readLine()) != null ) {
+	        xmlString += stringLine;
+	    }
+//	    System.out.println(xmlString);
+	    return xmlString;
+	}
 	
 	
 //	public static void main(String[] args) throws IOException, Exception {
@@ -216,6 +263,8 @@ public class AptApi {
 //		for (AptInfoDto aptInfoDto : aptlist) {
 //			System.out.println(aptInfoDto);
 //		}
+//		
+////		System.out.println(api.getCoordination("역삼동"));
 //	}
 }
 

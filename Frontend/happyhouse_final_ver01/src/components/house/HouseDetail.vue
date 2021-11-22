@@ -8,7 +8,8 @@
       </b-row>
       <b-row class="mb-2 mt-1">
         <b-col>
-          <house-map />
+          <!-- <house-map /> -->
+          <house-detail-map :address="house" />
         </b-col>
       </b-row>
     </b-col>
@@ -18,7 +19,7 @@
         <b-list-group flush>
           <b-list-group-item>일련번호 : {{ house.aptCode }}</b-list-group-item>
           <b-list-group-item
-            >아파트 이름 : {{ house.aptName }}}</b-list-group-item
+            >아파트 이름 : {{ house.aptName }}</b-list-group-item
           >
           <b-list-group-item>법정동 : {{ house.dongName }}</b-list-group-item>
           <b-list-group-item>층수 : {{ house.floor }}층</b-list-group-item>
@@ -44,14 +45,16 @@
 
 <script>
 import { mapState } from "vuex";
-import HouseMap from "@/components/house/HouseMap.vue";
+// import HouseMap from "@/components/house/HouseMap.vue";
+import HouseDetailMap from "@/components/house/HouseDetailMap.vue";
 
 const houseStore = "houseStore";
 
 export default {
   name: "HouseDetail",
   components: {
-    HouseMap,
+    // HouseMap,
+    HouseDetailMap,
   },
   computed: {
     ...mapState(houseStore, ["house"]),
