@@ -2,96 +2,108 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert variant="secondary" show><h3>회원가입</h3></b-alert>
+        <b-alert variant="" show><h3>회원가입</h3></b-alert>
       </b-col>
     </b-row>
     <b-row>
       <b-col></b-col>
-      <b-col cols="8">
-        <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
-          <b-form class="text-left">
-            <b-alert show variant="danger" v-if="empty"
-              >가입 정보를 입력해주세요.</b-alert
-            >
-            <b-alert show variant="danger" v-else-if="!checkid"
-              >이미 사용중인 아이디 입니다.</b-alert
-            >
-            <b-alert show variant="danger" v-else-if="defferentPwd"
-              >비밀번호가 일치하지 않습니다.</b-alert
-            >
-            <b-alert show variant="success" v-else-if="aftercheck"
-              >사용 가능한 아이디 입니다.</b-alert
-            >
-            <b-form-group label="아이디:" label-for="userid">
-              <b-button
-                type="button"
-                variant="warning"
-                class="m-1"
-                @click="check"
-                >중복검사</b-button
-              >
-              <b-form-input
-                id="userid"
-                v-model="user.userid"
-                required
-                placeholder="아이디 입력...."
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="이름:" label-for="username">
-              <b-form-input
-                id="username"
-                v-model="user.username"
-                required
-                placeholder="이름 입력...."
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="이메일:" label-for="email">
-              <b-form-input
-                id="useremail"
-                v-model="user.email"
-                required
-                placeholder="이메일 입력...."
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="비밀번호:" label-for="userpwd">
-              <b-form-input
-                type="password"
-                id="userpwd"
-                v-model="user.userpwd"
-                required
-                placeholder="비밀번호 입력...."
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="비밀번호 확인:" label-for="userpwdcheck">
-              <b-form-input
-                type="password"
-                id="userpwdcheck"
-                v-model="user.userpwdcheck"
-                required
-                placeholder="비밀번호 재입력...."
-                @keyup.enter="confirm"
-              ></b-form-input>
-            </b-form-group>
-            <b-button
-              type="button"
-              variant="primary"
-              class="m-1"
-              @click="confirm"
-              >회원가입</b-button
-            >
-            <b-button
-              type="button"
-              variant="danger"
-              class="m-1"
-              @click="movePage"
-              >취소</b-button
-            >
-          </b-form>
-        </b-card>
+      <b-col cols="5">
+        <form class="loginForm">
+          <b-alert show variant="danger" v-if="empty"
+            >가입 정보를 입력해주세요.</b-alert
+          >
+          <b-alert show variant="danger" v-else-if="!checkid"
+            >이미 사용중인 아이디 입니다.</b-alert
+          >
+          <b-alert show variant="danger" v-else-if="defferentPwd"
+            >비밀번호가 일치하지 않습니다.</b-alert
+          >
+          <b-alert show variant="success" v-else-if="aftercheck"
+            >사용 가능한 아이디 입니다.</b-alert
+          >
+
+          <div label="아이디:" label-for="userid" class="Form idForm">
+            <input
+              id="userid"
+              class="id"
+              v-model="user.userid"
+              required
+              placeholder="아이디 입력...."
+              @change="check"
+            />
+          </div>
+          <!-- <button
+            type="button"
+            variant="warning"
+            class="m-1 checkBtn"
+            @click="check"
+          >
+            중복검사
+          </button> -->
+          <div label="이름:" label-for="username" class="Form">
+            <input
+              id="username"
+              v-model="user.username"
+              required
+              placeholder="이름 입력...."
+              @keyup.enter="confirm"
+            />
+          </div>
+          <div label="이메일:" label-for="email" class="Form">
+            <input
+              id="useremail"
+              v-model="user.email"
+              required
+              placeholder="이메일 입력...."
+              @keyup.enter="confirm"
+            />
+          </div>
+          <div label="비밀번호:" label-for="userpwd" class="passForm Form">
+            <input
+              type="password"
+              id="userpwd"
+              v-model="user.userpwd"
+              required
+              placeholder="비밀번호 입력...."
+              @keyup.enter="confirm"
+              class="pw"
+            />
+          </div>
+          <div
+            label="비밀번호 확인:"
+            label-for="userpwdcheck"
+            class="passForm Form"
+          >
+            <input
+              type="password"
+              id="userpwdcheck"
+              v-model="user.userpwdcheck"
+              required
+              placeholder="비밀번호 재입력...."
+              @keyup.enter="confirm"
+              class="pw"
+            />
+          </div>
+          <button
+            type="button"
+            variant="primary"
+            class="m-1 mBtn"
+            @click="confirm"
+          >
+            회원가입
+          </button>
+          <button
+            type="button"
+            variant="danger"
+            class="m-1 mBtn"
+            @click="movePage"
+          >
+            취소
+          </button>
+        </form>
+        <!-- <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
+          
+        </b-card> -->
       </b-col>
       <b-col></b-col>
     </b-row>
@@ -164,4 +176,80 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.loginForm {
+  /* width: 300px; */
+  height: 400px;
+  padding: 30px, 20px;
+  background-color: #ffffff;
+  text-align: center;
+  /* transform: translate(-50%, -50%); */
+  border-radius: 15px;
+  margin-bottom: 50px;
+}
+
+.loginForm h2 {
+  text-align: center;
+  margin: 30px;
+}
+
+.Form {
+  border-bottom: 2px solid #adadad;
+  margin: 20px;
+  padding: 10px 10px;
+}
+
+.Form input {
+  width: 80%;
+  border: none;
+  outline: none;
+  color: #636e72;
+  font-size: 16px;
+  height: 25px;
+  background: none;
+  background-color: white;
+}
+
+/* button {
+  transform: translateX(-50%);
+  margin-bottom: 40px;
+  background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
+  background-position: left;
+  background-size: 200%;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+  display: inline;
+  padding: 10px;
+  
+} */
+
+.mBtn {
+  position: relative;
+  left: 40%;
+  transform: translateX(-50%);
+  margin-bottom: 40px;
+  width: 80%;
+  height: 40px;
+  background: linear-gradient(125deg, #81ecec, #6c5ce7, #81ecec);
+  background-position: left;
+  background-size: 200%;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.4s;
+  display: inline;
+}
+
+.mBtn:hover,
+button:hover {
+  background-position: right;
+}
+
+.bottomText {
+  text-align: center;
+}
+</style>

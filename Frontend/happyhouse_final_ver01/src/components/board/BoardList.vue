@@ -6,7 +6,7 @@
       </b-col>
     </b-row> -->
     <b-row class="mb-1">
-      <b-col class="text-right">
+      <b-col class="text-left">
         <b-button variant="outline-primary" @click="moveWrite()"
           >글쓰기</b-button
         >

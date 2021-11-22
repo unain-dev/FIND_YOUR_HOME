@@ -41,9 +41,10 @@
 <script>
 // import http from "@/util/http-common";
 import { registerComment, updateComment } from "@/api/comment.js";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 let store = "commentStore";
+let mStore = "memberStore";
 
 export default {
   name: "commentwrite",
@@ -59,6 +60,9 @@ export default {
     modifyComment: { type: Object },
     store: { type: String },
   },
+  computed: {
+    ...mapGetters(mStore, ["checkUserInfo"]),
+  },
   methods: {
     ...mapActions(store, ["actionComments"]),
 
@@ -66,7 +70,7 @@ export default {
       const article = {
         articleno: this.no,
         comment: this.comment,
-        userid: "ssafy",
+        userid: this.checkUserInfo.userid,
       };
 
       registerComment(

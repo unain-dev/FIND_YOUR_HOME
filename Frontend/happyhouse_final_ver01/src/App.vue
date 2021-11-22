@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <navi-bar />
-    <div class="empty-block"></div>
     <router-view />
     <Footer />
-    <div class="empty-block"></div>
   </div>
 </template>
 
@@ -30,7 +28,8 @@ a:hover {
 a.router-link-exact-active {
   color: #42b983;
 }
-.empty-block {
-  height: 50px;
+#app {
+  margin-top: 50px;
+  margin-bottom: 100px;
 }
 </style>

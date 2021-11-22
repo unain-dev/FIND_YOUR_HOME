@@ -15,7 +15,7 @@ function registerComment(article, success, fail) {
     .post("/comment/", {
       articleno: article.articleno,
       comment: article.comment,
-      userid: "ssafy",
+      userid: article.userid,
     })
     .then(success)
     .catch(fail);
