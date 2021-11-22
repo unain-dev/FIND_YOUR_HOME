@@ -9,7 +9,8 @@
       <b-row class="mb-2 mt-1">
         <b-col>
           <!-- <house-map /> -->
-          <house-detail-map :address="house" />
+          <!-- <house-detail-map :address="house" /> -->
+          <house-map :address="house" />
         </b-col>
       </b-row>
     </b-col>
@@ -45,16 +46,14 @@
 
 <script>
 import { mapState } from "vuex";
-// import HouseMap from "@/components/house/HouseMap.vue";
-import HouseDetailMap from "@/components/house/HouseDetailMap.vue";
+import HouseMap from "@/components/house/HouseMap.vue";
 
 const houseStore = "houseStore";
 
 export default {
   name: "HouseDetail",
   components: {
-    // HouseMap,
-    HouseDetailMap,
+    HouseMap,
   },
   computed: {
     ...mapState(houseStore, ["house"]),
