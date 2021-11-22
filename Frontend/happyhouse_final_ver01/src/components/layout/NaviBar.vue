@@ -135,6 +135,7 @@ export default {
 .toggle-btn {
   float: right;
   /* margin-right: 3rem; */
+  top: 0px;
 }
 
 .toggle-close-btn {

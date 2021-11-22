@@ -69,7 +69,7 @@ const isYourArticle = async (to, from, next) => {
       console.log("result : ", result);
       if (result) {
         const checkUserInfo = store.getters["memberStore/checkUserInfo"]; // 특수문자 /가 포함되어 잇으므로 []로 감싸서 호출 해야함.
-        console.log("checkUserInfo : ", checkUserInfo);
+        // console.log("checkUserInfo : ", checkUserInfo);
 
         if (checkUserInfo.userid == to.params.author || checkUserInfo.admin) {
           console.log("it's your article");
