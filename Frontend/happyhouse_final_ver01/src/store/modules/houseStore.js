@@ -96,7 +96,7 @@ const houseStore = {
         }
       );
     },
-    getHouseList({ commit }, dongCode) {
+    getHouseList ({ commit }, dongCode) {
       const params = { dong: dongCode };
       houseList(
         params,

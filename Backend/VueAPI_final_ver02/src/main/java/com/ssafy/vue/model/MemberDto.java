@@ -16,6 +16,8 @@ public class MemberDto {
 	private String email;
 	@ApiModelProperty(value = "회원 가입일")
 	private String joindate;
+	@ApiModelProperty(value = "관리자")
+	private boolean admin;
 
 	public String getUserid() {
 		return userid;
@@ -55,6 +57,14 @@ public class MemberDto {
 
 	public void setJoindate(String joindate) {
 		this.joindate = joindate;
+	}
+	
+	public boolean getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 }

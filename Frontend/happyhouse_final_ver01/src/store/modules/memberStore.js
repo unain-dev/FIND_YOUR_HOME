@@ -1,13 +1,20 @@
 import jwt_decode from "jwt-decode";
 import { login } from "@/api/member.js";
 import { findById } from "../../api/member";
+import { idcheck } from "@/api/member.js";
+import { register } from "@/api/member.js";
+import { updateInfo } from "@/api/member.js";
+import { deleteUser } from "@/api/member.js";
 
 const memberStore = {
-  namespaced: true, // 이걸 true로 해야 다른 컴포넌트에서 namespace로 actions나 다른 애들 호출 가능.
+  namespaced: true,
   state: {
     isLogin: false,
     isLoginError: false,
     userInfo: null,
+    checkid: true,
+    registerUser: false,
+    updateUser: false,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -25,6 +32,15 @@ const memberStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
+    CHECK_USER_ID: (state, checkid) => {
+      state.checkid = checkid;
+    },
+    REGISTER_USER: (state, registerUser) => {
+      state.registerUser = registerUser;
+    },
+    UPDATE_USER: (state, updateUser) => {
+      state.updateUser = updateUser;
+    },
   },
   actions: {
     async userConfirm({ commit }, user) {
@@ -32,35 +48,93 @@ const memberStore = {
         user,
         (response) => {
           if (response.data.message === "success") {
-            // response로 온 access-toekn 데이터를 가져옴.
-            // 토큰 이름이 access-token인 것임.
             let token = response.data["access-token"];
-
-            // 정상적으로 로그인이 된 경우
-            commit("SET_IS_LOGIN", true); // isLogin state를 true로 마킹.
-            commit("SET_IS_LOGIN_ERROR", false); // isLoginEror state를 false로 마킹.
-
-            //토큰 정보를 session storage에 저장.
+            commit("SET_IS_LOGIN", true);
+            commit("SET_IS_LOGIN_ERROR", false);
             sessionStorage.setItem("access-token", token);
           } else {
-            // 로그인이 거절된 경우.
-            commit("SET_IS_LOGIN", false); // isLogin state를 false로 마킹.
-            commit("SET_IS_LOGIN_ERROR", true); // isLoginEror state를 true로 마킹.
+            commit("SET_IS_LOGIN", false);
+            commit("SET_IS_LOGIN_ERROR", true);
           }
         },
         () => {}
       );
     },
     getUserInfo({ commit }, token) {
-      let decode_token = jwt_decode(token); // 토큰을 복호화.
+      let decode_token = jwt_decode(token);
       findById(
-        decode_token.userid, // 디코딩 된 토큰 안에 있는 userid를 빼서 파라미터로 전달.
+        decode_token.userid,
         (response) => {
           if (response.data.message === "success") {
-            // 정상 로그인된 경우, usrInfo state에 유저 정보 저장.
             commit("SET_USER_INFO", response.data.userInfo);
           } else {
             console.log("유저 정보 없음!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userRegister({ commit }, user) {
+      await register(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            alert("회원가입이 완료되었습니다.");
+            commit("REGISTER_USER", true);
+          } else {
+            console.log("가입 불가!!");
+            commit("REGISTER_USER", false);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userIdCheck({ commit }, userid) {
+      await idcheck(
+        userid,
+        (response) => {
+          if (response.data === "success") {
+            commit("CHECK_USER_ID", true);
+          } else {
+            commit("CHECK_USER_ID", false);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userUpdate({ commit }, user) {
+      await updateInfo(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("UPDATE_USER", true);
+            alert("회원정보가 수정되었습니다.");
+          } else {
+            commit("UPDATE_USER", false);
+            console.log("수정 불가!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    async userDelete({ commit }, userid) {
+      await deleteUser(
+        userid,
+        (response) => {
+          if (response.data === "success") {
+            alert("회원탈퇴 되셨습니다.");
+            commit("SET_IS_LOGIN", false);
+            commit("SET_USER_INFO", null);
+          } else {
+            console.log("탈퇴 불가!!");
           }
         },
         (error) => {

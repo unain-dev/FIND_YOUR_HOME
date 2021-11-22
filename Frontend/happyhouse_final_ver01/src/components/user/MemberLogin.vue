@@ -10,7 +10,7 @@
       <b-col cols="8">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
-            <b-alert show variant="danger" v-if="isLoginError"
+            <b-alert show variant="danger" v-if="error"
               >아이디 또는 비밀번호를 확인하세요.</b-alert
             >
             <b-form-group label="아이디:" label-for="userid">
@@ -57,7 +57,6 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
-// 사용할 actions를 가진 컴포넌트의 namespace
 const memberStore = "memberStore";
 
 export default {
@@ -68,22 +67,19 @@ export default {
         userid: null,
         userpwd: null,
       },
+      error: false,
     };
   },
   computed: {
     ...mapState(memberStore, ["isLogin", "isLoginError"]),
   },
   methods: {
-    // namespace로 actions호출.
-    // namespace가 memberStore인 컴포넌트에 userConfirm, getUserInfo 두개 actions를 품고 있는데 이 두개를 import하겠다는 뜻.
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
     async confirm() {
-      await this.userConfirm(this.user); // 로그인처리하고 session sotrage에 토큰이 저장 됨.
-      let token = sessionStorage.getItem("access-token"); // session storage에 저장된 토큰을 가져옴.
-
-      // isLogin state가 true인 경우 == 정상 로그인
+      await this.userConfirm(this.user);
+      this.error = this.isLoginError;
+      let token = sessionStorage.getItem("access-token");
       if (this.isLogin) {
-        // session storage에 저장된 토큰에 해당되는 유저 정보를 userInfo state에 저장.
         await this.getUserInfo(token);
         this.$router.push({ name: "Home" });
       }

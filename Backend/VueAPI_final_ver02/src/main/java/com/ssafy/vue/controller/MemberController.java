@@ -10,13 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.model.BoardDto;
 import com.ssafy.vue.model.MemberDto;
 import com.ssafy.vue.model.service.JwtServiceImpl;
 import com.ssafy.vue.model.service.MemberService;
@@ -94,5 +97,47 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "회원가입", notes = "회원 가입을 한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping
+	public ResponseEntity<String> register(@RequestBody @ApiParam(value = "가입할 회원정보", required = true) MemberDto memberDto) throws Exception {
+		logger.info("register - 호출");
+		if (memberService.register(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 
+	
+	@ApiOperation(value = "아이디 중복체크", notes = "아이디 중복체크를 한다. 그리고 DB검색 여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@GetMapping("/{userid}")
+	public ResponseEntity<String> idcheck(@PathVariable("userid") @ApiParam(value = "중복체크할 아이디", required = true) String userid) throws Exception {
+		logger.info("idcheck - 호출");
+		
+		if (memberService.idcheck(userid)) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "회원 정보 수정", notes = "회원 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping
+	public ResponseEntity<String> updateInfo(@RequestBody @ApiParam(value = "수정할 회원정보", required = true) MemberDto memberDto) throws Exception {
+		logger.info("updateInfo - 호출");
+		
+		if (memberService.updateInfo(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "회원 탈퇴", notes = "회원 탈퇴를 한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/{userid}")
+	public ResponseEntity<String> delete(@PathVariable("userid") @ApiParam(value = "삭제할 회원 아이디", required = true) String userid) throws Exception {
+		logger.info("delete - 호출");
+		if (memberService.deleteUser(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 }

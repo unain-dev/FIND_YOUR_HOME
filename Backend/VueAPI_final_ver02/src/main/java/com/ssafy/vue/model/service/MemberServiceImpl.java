@@ -24,5 +24,25 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDto userInfo(String userid) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
 	}
+	
+	@Override
+	public boolean idcheck(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).idcheck(userid) == 1;
+	}
+
+	@Override
+	public boolean register(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).register(memberDto) == 1;
+	}
+	
+	@Override
+	public boolean updateInfo(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).updateInfo(memberDto) == 1;
+	}
+
+	@Override
+	public boolean deleteUser(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).deleteUser(userid) == 1;
+	}
 
 }

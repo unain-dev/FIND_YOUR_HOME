@@ -16,4 +16,27 @@
 		where userid = #{userid}
 	</select>
 	
+	<select id="idcheck" parameterType="String" resultType="int">
+		select
+		count(userid)
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+	
+	<insert id="register" parameterType="memberDto">
+		insert into ssafy_member (userid, username, userpwd, email, joindate)
+		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
+	</insert>
+	
+	<update id="updateInfo" parameterType="memberDto">
+		update ssafy_member
+		set username = #{username}, userpwd = #{userpwd}, email = #{email}
+		where userid = #{userid}
+	</update>
+	
+	<delete id="deleteUser" parameterType="String">
+		delete
+		from ssafy_member
+		where userid = #{userid}
+	</delete>
 </mapper>

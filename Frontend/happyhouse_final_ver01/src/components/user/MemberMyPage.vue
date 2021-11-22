@@ -47,8 +47,9 @@
           </b-container>
           <hr class="my-4" />
 
-          <b-button variant="primary" href="#" class="mr-1">정보수정</b-button>
-          <b-button variant="danger" href="#">회원탈퇴</b-button>
+          <b-button variant="primary" href="#" class="mr-1" @click="MovePage"
+            >정보수정</b-button
+          >
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
@@ -66,6 +67,11 @@ export default {
   components: {},
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+  },
+  methods: {
+    MovePage() {
+      this.$router.push({ name: "Update" });
+    },
   },
 };
 </script>
