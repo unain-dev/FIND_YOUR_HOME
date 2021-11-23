@@ -84,17 +84,37 @@ export default {
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
+      "SET_SIDO_NAME",
+      "SET_GUGUN_NAME",
     ]),
     // sidoList() {
     //   this.getSido();
     // },
     gugunList() {
-      // console.log(this.sidoCode);
+      // houseStore에 선택한 시 이름 저장
+      for (let item of this.sidos) {
+        if (item.value == this.sidoCode) {
+          const sidoName = item.text;
+
+          this.SET_SIDO_NAME(sidoName);
+          break;
+        }
+      }
+
       this.CLEAR_GUGUN_LIST();
       this.gugunCode = null;
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     dongList() {
+      // houseStore에 선택한 구 이름 저장
+      for (let item of this.guguns) {
+        if (item.value == this.gugunCode) {
+          const gunName = item.text;
+          this.SET_GUGUN_NAME(gunName);
+          break;
+        }
+      }
+
       this.CLEAR_DONG_LIST();
       this.dongCode = null;
       if (this.gugunCode) this.getDong(this.gugunCode);

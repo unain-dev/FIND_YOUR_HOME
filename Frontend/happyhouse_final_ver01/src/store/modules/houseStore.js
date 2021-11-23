@@ -8,11 +8,22 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    sidoName: null,
+    gugunName: null,
   },
 
   getters: {},
 
   mutations: {
+    SET_SIDO_NAME: (state, sido) => {
+      state.sidoName = sido;
+      console.log(state.sidoName);
+    },
+    SET_GUGUN_NAME: (state, gugun) => {
+      state.gugunName = gugun;
+      console.log(state.gugunName);
+    },
+
     SET_SIDO_LIST: (state, sidos) => {
       sidos.forEach((sido) => {
         state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });

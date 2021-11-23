@@ -23,4 +23,8 @@ function houseList(params, success, fail) {
   api.get(`/map/apt`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, dongList, houseList };
+function crimeLevel(params, success, fail) {
+  api.get(`/map/crime`, { params: params }).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, dongList, houseList, crimeLevel };

@@ -11,7 +11,7 @@
     <b-col>
       <b-card>
         <b-list-group flush>
-          <b-list-group-item>일련번호 : {{ house.aptCode }}</b-list-group-item>
+          <!-- <b-list-group-item>일련번호 : {{ house.aptCode }}</b-list-group-item> -->
           <b-list-group-item
             >아파트 이름 : {{ house.aptName }}</b-list-group-item
           >
