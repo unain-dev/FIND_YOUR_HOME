@@ -1,39 +1,51 @@
 <template>
   <div>
+    <p>hi!!</p>
     <div id="map"></div>
-    <div class="button-group">
-      <p>아파트 명 :{{ address.aptName }}</p>
-    </div>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
+import { mapMutations, mapState } from "vuex";
+const houseStore = "houseStore";
 
 export default {
-  name: "KakaoMap",
-  props: ["address"],
+  name: "HouseMap",
 
+  computed: {
+    ...mapState(houseStore, ["houses", "house"]),
+  },
   data() {
     return {
       map: null,
-      markerPositions: [[this.address.lat, this.address.lng]],
+      markerPosition: [],
+      markerPositions: [],
       markers: [],
       infowindow: null,
     };
   },
+  watch: {
+    // detail apt 선택이 변경됐을 경우 마커 하나 업데이트
+    house: function () {
+      console.log("house change");
+      this.displayMarker();
+    },
+    // apt 리스트가 변경됐을 경우 다중 마커 업데이트
+    houses: function () {
+      console.log("houses change");
+      this.displayMarkers();
+    },
+  },
   updated() {
-    this.markerPositions = [[this.address.lat, this.address.lng]];
-
-    this.displayMarker(this.markerPositions);
-    console.log("markerPositions : ", this.markerPositions);
-    console.log("address : ", this.address);
+    this.displayMarker();
+    console.log("markerPositions : ", this.markerPosition);
+    console.log("house : ", this.house);
 
     console.log("updated map");
   },
   mounted() {
-    // const API = "cfe77a3882d48223692d447d99eb8180";
-    const API = "7d1ddbdaf0c55a8963af5f299d36c86a";
+    console.log("mounted");
+    const API = process.env.VUE_APP_KAKAO_MAP_API_KEY;
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
@@ -42,32 +54,29 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + API;
-      // "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0";
       document.head.appendChild(script);
     }
   },
   methods: {
+    ...mapMutations(houseStore, ["CLEAR_HOUSE"]),
     initMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.address.lat, this.address.lng),
-        level: 5,
+        center: new kakao.maps.LatLng(37.566826, 126.9786567),
+        level: 3,
       };
       this.map = new kakao.maps.Map(container, options);
-      this.displayMarker(this.markerPositions);
     },
-    changeSize(size) {
-      const container = document.getElementById("map");
-      container.style.width = `${size}px`;
-      container.style.height = `${size}px`;
-      this.map.relayout();
-    },
-    displayMarker(markerPositions) {
+
+    // 상세보기 - 마커 하나 띄우기
+    displayMarker() {
+      this.markerPosition = [[this.house.lat, this.house.lng]];
+      this.markerPositions = [];
       if (this.markers.length > 0) {
         this.markers.forEach((marker) => marker.setMap(null));
       }
 
-      const positions = markerPositions.map(
+      const positions = this.markerPosition.map(
         (position) => new kakao.maps.LatLng(...position)
       );
 
@@ -88,25 +97,43 @@ export default {
         this.map.setBounds(bounds);
       }
     },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
+
+    // 아파트 리스트 보기 - 다중 마커 띄우기
+    displayMarkers() {
+      this.markerPosition = [];
+      this.markerPositions = [];
+      for (let i = 0; i < this.houses.length; i++) {
+        if (this.houses[i].lat == null) {
+          console.warn(this.houses[i].aptName + " 좌표가 없습니다.");
+          continue;
+        }
+        this.markerPositions.push([this.houses[i].lat, this.houses[i].lng]);
       }
 
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+      if (this.markers.length > 0) {
+        this.markers.forEach((marker) => marker.setMap(null));
+      }
 
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
+      const positions = this.markerPositions.map(
+        (position) => new kakao.maps.LatLng(...position)
+      );
 
-      this.map.setCenter(iwPosition);
+      if (positions.length > 0) {
+        this.markers = positions.map(
+          (position) =>
+            new kakao.maps.Marker({
+              map: this.map,
+              position,
+            })
+        );
+
+        const bounds = positions.reduce(
+          (bounds, latlng) => bounds.extend(latlng),
+          new kakao.maps.LatLngBounds()
+        );
+
+        this.map.setBounds(bounds);
+      }
     },
   },
 };
