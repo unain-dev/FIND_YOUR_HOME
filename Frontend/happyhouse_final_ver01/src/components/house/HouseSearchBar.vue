@@ -62,7 +62,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, ["sidos", "guguns", "dongs"]),
+    ...mapState(houseStore, [
+      "sidos",
+      "guguns",
+      "dongs",
+      "sidoName",
+      "gugunName",
+    ]),
     // sidos() {
     //   return this.$store.state.sidos;
     // },
@@ -122,6 +128,15 @@ export default {
     async searchApt() {
       console.log(this.dongCode);
       this.$store.commit("loading", true, { root: true });
+
+      // houseList 받아올 때 sidoName, gugunName까지 보내는 params
+      // const params = {
+      //   dongCode: this.dongCode,
+      //   sidoName: this.sidoName,
+      //   gugunName: this.gugunName,
+      // };
+
+      // console.log("HouseSearchBar searchApt params :", params);
 
       if (this.dongCode) {
         await this.getHouseList(this.dongCode);
