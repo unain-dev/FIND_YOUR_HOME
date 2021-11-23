@@ -13,10 +13,10 @@
         <house-list />
       </b-col>
       <b-col cols="8">
+        <house-map />
         <house-detail />
       </b-col>
       <!-- <b-col cols="4">
-        <house-map />
       </b-col> -->
     </b-row>
   </b-container>
@@ -25,7 +25,7 @@
 import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
 import HouseList from "@/components/house/HouseList.vue";
 import HouseDetail from "@/components/house/HouseDetail.vue";
-// import HouseMap from "@/components/house/HouseMap.vue";
+import HouseMap from "@/components/house/HouseMap.vue";
 
 export default {
   name: "House",
@@ -33,7 +33,7 @@ export default {
     HouseSearchBar,
     HouseList,
     HouseDetail,
-    // HouseMap
+    HouseMap
   },
 };
 </script>

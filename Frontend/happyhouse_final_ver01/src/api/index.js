@@ -9,6 +9,29 @@ function apiInstance() {
       "Content-type": "application/json",
     },
   });
+
+  // instance.interceptors.request.use(
+  //   (config) => {
+  //     this.$store.commit("spinnerStore/loading", true, { root: true });
+  //     return config;
+  //   },
+  //   (error) => {
+  //     this.$store.commit("spinnerStore/loading", false, { root: true });
+  //     return Promise.reject(error);
+  //   }
+  // );
+
+  // instance.interceptors.response.use(
+  //   (response) => {
+  //     this.$store.commit("loading", false, { root: true });
+  //     return response;
+  //   },
+  //   (error) => {
+  //     this.$store.commit("loading", false, { root: true });
+  //     return Promise.reject(error);
+  //   }
+  // );
+
   return instance;
 }
 
@@ -19,6 +42,28 @@ function houseInstance() {
       "Content-type": "application/json",
     },
   });
+
+  instance.interceptors.request.use(
+    (config) => {
+      this.$store.commit("loading", true, { root: true });
+      return config;
+    },
+    (error) => {
+      this.$store.commit("loading", false, { root: true });
+      return Promise.reject(error);
+    }
+  );
+
+  instance.interceptors.response.use(
+    (response) => {
+      this.$store.commit("loading", false, { root: true });
+      return response;
+    },
+    (error) => {
+      this.$store.commit("loading", false, { root: true });
+      return Promise.reject(error);
+    }
+  );
   return instance;
 }
 

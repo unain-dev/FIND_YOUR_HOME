@@ -88,14 +88,19 @@ const houseStore = {
         }
       );
     },
-    getHouseList ({ commit }, dongCode) {
+    getHouseList({ commit }, dongCode) {
       const params = { dong: dongCode };
       houseList(
         params,
         ({ data }) => {
           commit("SET_HOUSE_LIST", data);
+          commit("loading", false, { root: true });
         },
         (error) => {
+          commit("loading", false, {
+            root: true,
+          });
+
           console.log(error);
         }
       );

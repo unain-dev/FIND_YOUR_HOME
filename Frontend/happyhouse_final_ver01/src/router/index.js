@@ -89,6 +89,17 @@ const isYourArticle = async (to, from, next) => {
     });
 };
 
+// router.beforeEach((to, from, next) => {
+//   store.commit("spinnerStore/startSpinner");
+//   setTimeout(() => {
+//     next();
+//   }, 1);
+// });
+
+// router.afterEach(() => {
+//   store.commit("spinnerStore/endSpinner");
+// });
+
 const routes = [
   {
     path: "/",

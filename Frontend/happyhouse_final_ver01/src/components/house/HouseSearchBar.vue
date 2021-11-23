@@ -32,7 +32,7 @@
       ></b-form-select>
     </b-col>
     <b-col class="sm-3">
-      <b-input type="text" value="아파트 검색 준비중"/>
+      <b-input type="text" value="아파트 검색 준비중" />
     </b-col>
   </b-row>
 </template>
@@ -74,10 +74,19 @@ export default {
     this.getSido();
   },
   methods: {
-    ...mapActions(houseStore, ["getSido", "getGugun", "getDong", "getHouseList"]),
-    ...mapMutations(houseStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST"]),
+    ...mapActions(houseStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouseList",
+    ]),
+    ...mapMutations(houseStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+    ]),
     // sidoList() {
-      //   this.getSido();
+    //   this.getSido();
     // },
     gugunList() {
       // console.log(this.sidoCode);
@@ -92,7 +101,11 @@ export default {
     },
     async searchApt() {
       console.log(this.dongCode);
-      if (this.dongCode) await this.getHouseList(this.dongCode);
+      this.$store.commit("loading", true, { root: true });
+
+      if (this.dongCode) {
+        await this.getHouseList(this.dongCode);
+      }
     },
   },
 };
