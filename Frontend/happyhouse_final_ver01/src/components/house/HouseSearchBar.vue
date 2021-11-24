@@ -92,6 +92,8 @@ export default {
       "CLEAR_DONG_LIST",
       "SET_SIDO_NAME",
       "SET_GUGUN_NAME",
+      "SET_GUGUN_CODE",
+      "CLEAR_HOUSE_LIST",
     ]),
     // sidoList() {
     //   this.getSido();
@@ -107,6 +109,7 @@ export default {
         }
       }
 
+      this.CLEAR_HOUSE_LIST();
       this.CLEAR_GUGUN_LIST();
       this.gugunCode = null;
       if (this.sidoCode) this.getGugun(this.sidoCode);
@@ -117,6 +120,7 @@ export default {
         if (item.value == this.gugunCode) {
           const gunName = item.text;
           this.SET_GUGUN_NAME(gunName);
+          this.SET_GUGUN_CODE(this.gugunCode);
           break;
         }
       }

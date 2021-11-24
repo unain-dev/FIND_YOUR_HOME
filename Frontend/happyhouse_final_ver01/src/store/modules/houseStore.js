@@ -10,6 +10,7 @@ const houseStore = {
     house: null,
     sidoName: null,
     gugunName: null,
+    gugunCode: null,
   },
 
   getters: {},
@@ -22,6 +23,10 @@ const houseStore = {
     SET_GUGUN_NAME: (state, gugun) => {
       state.gugunName = gugun;
       console.log(state.gugunName);
+    },
+    SET_GUGUN_CODE: (state, code) => {
+      state.gugunCode = code;
+      console.log(state.gugunCode);
     },
 
     SET_SIDO_LIST: (state, sidos) => {
@@ -50,6 +55,10 @@ const houseStore = {
     },
     CLEAR_DONG_LIST(state) {
       state.dongs = [{ value: null, text: "선택하세요" }];
+    },
+    CLEAR_HOUSE_LIST(state) {
+      state.houses = [];
+      state.house = null;
     },
     SET_HOUSE_LIST: (state, houses) => {
       state.houses = houses;
