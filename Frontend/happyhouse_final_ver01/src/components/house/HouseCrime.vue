@@ -1,8 +1,18 @@
 <template>
-  <div>
+  <div class="crime-level-container">
     <!-- <p>{{ sidos }} {{ guguns }}</p> -->
     <p v-show="false">시도 구군코드 : {{ gugunName }}</p>
-    <div v-if="level != null">선택 시군구의 범죄 노출 레벨 : {{ level }}</div>
+    <div v-if="value != null">
+      <p>선택 시군구의 범죄 안전 레벨 : {{ value }}</p>
+      <div>
+        <b-form-rating
+          v-model="value"
+          readonly
+          variant="info"
+          class="mb-2"
+        ></b-form-rating>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,6 +24,7 @@ export default {
   data() {
     return {
       level: null,
+      value: null,
     };
   },
   computed: {
@@ -35,10 +46,17 @@ export default {
             (response) => {
               // console.log(response.data.rate);
 
-              if (response.data.rate < 0) {
+              if (response.data.rate <= 0) {
                 this.level = null;
+                this.value = null;
               } else {
                 this.level = response.data.rate;
+                let temp = response.data.rate;
+                if (temp > 5) {
+                  this.value = 5;
+                } else if (temp <= 0) {
+                  this.value = 0.5;
+                }
               }
             },
             (error) => {
@@ -52,4 +70,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.crime-level-container {
+  margin: 30px;
+}
+</style>

@@ -55,11 +55,13 @@ export default {
   width: 50px;
 }
 .mouse-over-bgcolor {
-  background-color: lightblue;
+  background-color: rgba(173, 216, 230, 0.308);
+  cursor: pointer;
+  border-radius: 10px;
 }
 
 .item-col {
-  border-bottom: 2px solid gray;
+  border-bottom: 0.4px dashed gray;
   margin-top: 20px;
 }
 </style>

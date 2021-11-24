@@ -125,21 +125,25 @@ export default {
       this.dongCode = null;
       if (this.gugunCode) this.getDong(this.gugunCode);
     },
+    // async searchApt() {
+    //   this.$store.commit("loading", true, { root: true });
+    //   if (this.dongCode) {
+    // await this.getHouseList(this.dongCode);
+    //   }
+    // },
+
     async searchApt() {
-      console.log(this.dongCode);
       this.$store.commit("loading", true, { root: true });
 
       // houseList 받아올 때 sidoName, gugunName까지 보내는 params
-      // const params = {
-      //   dongCode: this.dongCode,
-      //   sidoName: this.sidoName,
-      //   gugunName: this.gugunName,
-      // };
-
-      // console.log("HouseSearchBar searchApt params :", params);
+      const params = {
+        dong: this.dongCode,
+        sidoName: this.sidoName,
+        gugunName: this.gugunName,
+      };
 
       if (this.dongCode) {
-        await this.getHouseList(this.dongCode);
+        await this.getHouseList(params);
       }
     },
   },
