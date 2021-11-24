@@ -51,10 +51,10 @@ export default {
                 this.value = null;
               } else {
                 this.level = response.data.rate;
-                let temp = response.data.rate;
+                let temp = 5 - response.data.rate;
                 if (temp > 5) {
                   this.value = 5;
-                } else if (temp <= 0) {
+                } else if (temp == 0) {
                   this.value = 0.5;
                 }
               }
