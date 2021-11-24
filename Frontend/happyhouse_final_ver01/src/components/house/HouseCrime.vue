@@ -1,19 +1,11 @@
 <template>
   <div class="crime-level-container">
     <!-- <p>{{ sidos }} {{ guguns }}</p> -->
-    <p v-show="false">시도 구군코드 : {{ gugunName }}</p>
+    <p v-show="false">시도 구군코드 : {{ gugunCode }}</p>
     <div v-if="level != null">
       <p class="level" :style="{ color: fontColor }">
         범죄 안전레벨 {{ value }}
       </p>
-      <!-- <div>
-        <b-form-rating
-          readonly
-          id="rating-inline"
-          inline
-          :value="value"
-        ></b-form-rating>
-      </div> -->
     </div>
   </div>
 </template>
@@ -32,45 +24,39 @@ export default {
   },
   computed: {
     ...mapState({
-      //   sidoName: (state) => {
-      //     console.log(state.houseStore.sidoName);
-
-      //     return state.houseStore.sidoName;
-      //   },
-      gugunName: function (state) {
-        if (state.houseStore.gugunName != null) {
+      gugunCode: function (state) {
+        if (state.houseStore.gugunCode != null) {
           const params = {
-            sidoName: state.houseStore.sidoName,
-            gugunName: state.houseStore.gugunName,
             gugunCode: state.houseStore.gugunCode,
           };
 
           crimeLevel(
             params,
             (response) => {
-              // console.log(response.data.rate);
+              let safe = response.data.ratio / 100;
 
-              if (response.data.rate <= 0) {
-                this.level = null;
-                this.value = null;
-              } else {
-                this.level = response.data.rate;
-                if (this.level == 1) {
+              if (safe > 0) {
+                this.level = safe;
+                console.log(this.level);
+                if (safe <= 1) {
                   this.value = "😆 아주 좋음 😆";
                   this.fontColor = "rgb(0, 255, 255)";
-                } else if (this.level == 2) {
+                } else if (safe <= 2) {
                   this.value = "😊 좋음 😊";
                   this.fontColor = "rgb(127, 255, 0)";
-                } else if (this.level == 3) {
+                } else if (safe <= 3) {
                   this.value = "😐 보통 😐";
                   this.fontColor = "yellow";
-                } else if (this.level == 4) {
+                } else if (safe <= 4) {
                   this.value = "😥 나쁨 😥";
                   this.fontColor = "orange";
-                } else if (this.level == 5) {
+                } else if (safe <= 5 || safe > 5) {
                   this.value = "😰 매우 나쁨 😰";
                   this.fontColor = "red";
                 }
+              } else {
+                this.level = null;
+                this.value = null;
               }
             },
             (error) => {

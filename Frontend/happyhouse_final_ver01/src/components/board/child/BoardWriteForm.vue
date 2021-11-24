@@ -2,7 +2,7 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group
+        <!-- <b-form-group
           id="userid-group"
           label="작성자:"
           label-for="userid"
@@ -16,7 +16,7 @@
             required
             placeholder="작성자 입력..."
           ></b-form-input>
-        </b-form-group>
+        </b-form-group> -->
 
         <b-form-group
           id="subject-group"
@@ -61,6 +61,7 @@
 
 <script>
 import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BoardWriteForm",
@@ -97,17 +98,19 @@ export default {
     }
   },
   methods: {
+    ...mapGetters("memberStore", ["checkUserInfo"]),
+
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
+      // !this.article.userid &&
+      //   ((msg = "작성자 입력해주세요"),
+      //   (err = false),
+      //   this.$refs.userid.focus());
+      // err &&
+      !this.article.subject &&
         ((msg = "제목 입력해주세요"),
         (err = false),
         this.$refs.subject.focus());
@@ -131,7 +134,7 @@ export default {
     registArticle() {
       writeArticle(
         {
-          userid: this.article.userid,
+          userid: this.checkUserInfo().userid,
           subject: this.article.subject,
           content: this.article.content,
         },

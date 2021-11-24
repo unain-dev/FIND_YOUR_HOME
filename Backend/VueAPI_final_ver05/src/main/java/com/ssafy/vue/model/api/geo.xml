@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GeocodeResponse>
+	<status>OK</status>
+	<result>
+		<type>establishment</type>
+		<type>point_of_interest</type>
+		<type>transit_station</type>
+		<formatted_address>South Korea, Seoul, Hyoje-dong, 종로5가.효제동.김상옥의거터</formatted_address>
+		<address_component>
+			<long_name>종로5가.효제동.김상옥의거터</long_name>
+			<short_name>종로5가.효제동.김상옥의거터</short_name>
+			<type>establishment</type>
+			<type>point_of_interest</type>
+			<type>transit_station</type>
+		</address_component>
+		<address_component>
+			<long_name>Hyoje-dong</long_name>
+			<short_name>Hyoje-dong</short_name>
+			<type>political</type>
+			<type>sublocality</type>
+			<type>sublocality_level_2</type>
+		</address_component>
+		<address_component>
+			<long_name>Seoul</long_name>
+			<short_name>Seoul</short_name>
+			<type>administrative_area_level_1</type>
+			<type>political</type>
+		</address_component>
+		<address_component>
+			<long_name>South Korea</long_name>
+			<short_name>KR</short_name>
+			<type>country</type>
+			<type>political</type>
+		</address_component>
+		<address_component>
+			<long_name>110-480</long_name>
+			<short_name>110-480</short_name>
+			<type>postal_code</type>
+		</address_component>
+		<geometry>
+			<location>
+				<lat>37.5744710</lat>
+				<lng>127.0022410</lng>
+			</location>
+			<location_type>GEOMETRIC_CENTER</location_type>
+			<viewport>
+				<southwest>
+					<lat>37.5731220</lat>
+					<lng>127.0008920</lng>
+				</southwest>
+				<northeast>
+					<lat>37.5758200</lat>
+					<lng>127.0035900</lng>
+				</northeast>
+			</viewport>
+		</geometry>
+		<place_id>ChIJL2g4dyajfDURzCEgGjIAaa8</place_id>
+	</result>
+</GeocodeResponse>

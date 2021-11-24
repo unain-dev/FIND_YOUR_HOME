@@ -90,64 +90,45 @@ export default {
       "CLEAR_SIDO_LIST",
       "CLEAR_GUGUN_LIST",
       "CLEAR_DONG_LIST",
-      "SET_SIDO_NAME",
-      "SET_GUGUN_NAME",
+      // "SET_SIDO_NAME",
+      // "SET_GUGUN_NAME",
       "SET_GUGUN_CODE",
+      "CLEAR_GUGUN_CODE",
       "CLEAR_HOUSE_LIST",
+      "SET_DONG_CODE",
+      "CLEAR_DONG_CODE",
     ]),
     // sidoList() {
     //   this.getSido();
     // },
     gugunList() {
-      // houseStore에 선택한 시 이름 저장
-      for (let item of this.sidos) {
-        if (item.value == this.sidoCode) {
-          const sidoName = item.text;
-
-          this.SET_SIDO_NAME(sidoName);
-          break;
-        }
-      }
-
       this.CLEAR_HOUSE_LIST();
       this.CLEAR_GUGUN_LIST();
+      this.CLEAR_GUGUN_CODE();
+      this.CLEAR_DONG_CODE();
       this.gugunCode = null;
-      if (this.sidoCode) this.getGugun(this.sidoCode);
+      if (this.sidoCode) {
+        this.getGugun(this.sidoCode);
+      }
     },
     dongList() {
-      // houseStore에 선택한 구 이름 저장
-      for (let item of this.guguns) {
-        if (item.value == this.gugunCode) {
-          const gunName = item.text;
-          this.SET_GUGUN_NAME(gunName);
-          this.SET_GUGUN_CODE(this.gugunCode);
-          break;
-        }
-      }
-
       this.CLEAR_DONG_LIST();
       this.dongCode = null;
-      if (this.gugunCode) this.getDong(this.gugunCode);
+
+      console.log("this gugunCode", this.gugunCode);
+
+      if (this.gugunCode) {
+        this.SET_GUGUN_CODE(this.gugunCode);
+        this.getDong(this.gugunCode);
+      }
     },
-    // async searchApt() {
-    //   this.$store.commit("loading", true, { root: true });
-    //   if (this.dongCode) {
-    // await this.getHouseList(this.dongCode);
-    //   }
-    // },
 
     async searchApt() {
       this.$store.commit("loading", true, { root: true });
 
-      // houseList 받아올 때 sidoName, gugunName까지 보내는 params
-      const params = {
-        dong: this.dongCode,
-        sidoName: this.sidoName,
-        gugunName: this.gugunName,
-      };
-
       if (this.dongCode) {
-        await this.getHouseList(params);
+        await this.getHouseList(this.dongCode);
+        this.SET_DONG_CODE(this.dongCode);
       }
     },
   },

@@ -8,25 +8,37 @@ const houseStore = {
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
-    sidoName: null,
-    gugunName: null,
+    // sidoName: null,
+    // gugunName: null,
     gugunCode: null,
+    dongCode: null,
   },
 
   getters: {},
 
   mutations: {
-    SET_SIDO_NAME: (state, sido) => {
-      state.sidoName = sido;
-      console.log(state.sidoName);
-    },
-    SET_GUGUN_NAME: (state, gugun) => {
-      state.gugunName = gugun;
-      console.log(state.gugunName);
-    },
+    // SET_SIDO_NAME: (state, sido) => {
+    //   state.sidoName = sido;
+    //   console.log(state.sidoName);
+    // },
+    // SET_GUGUN_NAME: (state, gugun) => {
+    //   state.gugunName = gugun;
+    //   console.log(state.gugunName);
+    // },
     SET_GUGUN_CODE: (state, code) => {
       state.gugunCode = code;
-      console.log(state.gugunCode);
+      console.log("gugunCode : ", state.gugunCode);
+    },
+    CLEAR_GUGUN_CODE: (state) => {
+      state.gugunCode = null;
+    },
+
+    SET_DONG_CODE: (state, code) => {
+      state.dongCode = code;
+      console.log(state.dongCode);
+    },
+    CLEAR_DONG_CODE: (state) => {
+      state.dongCode = null;
     },
 
     SET_SIDO_LIST: (state, sidos) => {
@@ -108,7 +120,10 @@ const houseStore = {
         }
       );
     },
-    getHouseList({ commit }, params) {
+    getHouseList({ commit }, dongCode) {
+      const params = {
+        dong: dongCode,
+      };
       houseList(
         params,
         ({ data }) => {

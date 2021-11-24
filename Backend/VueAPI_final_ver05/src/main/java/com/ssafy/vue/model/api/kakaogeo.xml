@@ -1,0 +1,70 @@
+<result>
+	<documents>
+		<address>
+			<address_name>서울 강남구 역삼동</address_name>
+			<b_code>1168010100</b_code>
+			<h_code></h_code>
+			<main_address_no></main_address_no>
+			<mountain_yn>N</mountain_yn>
+			<region_1depth_name>서울</region_1depth_name>
+			<region_2depth_name>강남구</region_2depth_name>
+			<region_3depth_h_name></region_3depth_h_name>
+			<region_3depth_name>역삼동</region_3depth_name>
+			<sub_address_no></sub_address_no>
+			<x>127.03306536185</x>
+			<y>37.4953666908089</y>
+		</address>
+		<address_name>서울 강남구 역삼동</address_name>
+		<address_type>REGION</address_type>
+		<road_address></road_address>
+		<x>127.03306536185</x>
+		<y>37.4953666908089</y>
+	</documents>
+	<documents>
+		<address>
+			<address_name>서울 강남구 역삼1동</address_name>
+			<b_code></b_code>
+			<h_code>1168064000</h_code>
+			<main_address_no></main_address_no>
+			<mountain_yn>N</mountain_yn>
+			<region_1depth_name>서울</region_1depth_name>
+			<region_2depth_name>강남구</region_2depth_name>
+			<region_3depth_h_name>역삼1동</region_3depth_h_name>
+			<region_3depth_name></region_3depth_name>
+			<sub_address_no></sub_address_no>
+			<x>127.033201083326</x>
+			<y>37.4954171091244</y>
+		</address>
+		<address_name>서울 강남구 역삼1동</address_name>
+		<address_type>REGION</address_type>
+		<road_address></road_address>
+		<x>127.033201083326</x>
+		<y>37.4954171091244</y>
+	</documents>
+	<documents>
+		<address>
+			<address_name>서울 강남구 역삼2동</address_name>
+			<b_code></b_code>
+			<h_code>1168065000</h_code>
+			<main_address_no></main_address_no>
+			<mountain_yn>N</mountain_yn>
+			<region_1depth_name>서울</region_1depth_name>
+			<region_2depth_name>강남구</region_2depth_name>
+			<region_3depth_h_name>역삼2동</region_3depth_h_name>
+			<region_3depth_name></region_3depth_name>
+			<sub_address_no></sub_address_no>
+			<x>127.046839198832</x>
+			<y>37.4959639052057</y>
+		</address>
+		<address_name>서울 강남구 역삼2동</address_name>
+		<address_type>REGION</address_type>
+		<road_address></road_address>
+		<x>127.046839198832</x>
+		<y>37.4959639052057</y>
+	</documents>
+	<meta>
+		<is_end>true</is_end>
+		<pageable_count>3</pageable_count>
+		<total_count>3</total_count>
+	</meta>
+</result>
