@@ -62,13 +62,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(houseStore, [
-      "sidos",
-      "guguns",
-      "dongs",
-      "sidoName",
-      "gugunName",
-    ]),
+    ...mapState(houseStore, ["sidos", "guguns", "dongs"]),
     // sidos() {
     //   return this.$store.state.sidos;
     // },

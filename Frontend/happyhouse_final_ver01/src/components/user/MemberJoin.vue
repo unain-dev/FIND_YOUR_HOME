@@ -32,14 +32,6 @@
               @change="check"
             />
           </div>
-          <!-- <button
-            type="button"
-            variant="warning"
-            class="m-1 checkBtn"
-            @click="check"
-          >
-            중복검사
-          </button> -->
           <div label="이름:" label-for="username" class="Form">
             <input
               id="username"
@@ -84,6 +76,50 @@
               class="pw"
             />
           </div>
+          <div>
+            <!-- <b-form-tags
+              input-id="tags-pills"
+              v-model="user.dongcodes"
+              tag-variant="primary"
+              tag-pills
+              size="lg"
+            ></b-form-tags> -->
+            <div class="d-inline-block" style="font-size: 1.5rem">
+              <b-form-tag
+                v-for="tag in user.dongcodes"
+                @remove="removeTag(tag)"
+                :key="tag"
+                :title="tag"
+                class="mr-1"
+                >{{ tag }}</b-form-tag
+              >
+            </div>
+
+            <b-form-select
+              v-model="sidoCode"
+              :options="sidos"
+              @change="gugunList"
+            ></b-form-select>
+            <b-form-select
+              v-model="gugunCode"
+              :options="guguns"
+              @change="dongList"
+            ></b-form-select>
+            <b-form-select
+              v-model="dongCode"
+              :options="dongs"
+              @change="selectDong"
+            ></b-form-select>
+            <button
+              type="button"
+              variant="primary"
+              class="m-1"
+              @click="addDong"
+            >
+              추가
+            </button>
+          </div>
+
           <button
             type="button"
             variant="primary"
@@ -101,9 +137,6 @@
             취소
           </button>
         </form>
-        <!-- <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
-          
-        </b-card> -->
       </b-col>
       <b-col></b-col>
     </b-row>
@@ -111,9 +144,10 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 const memberStore = "memberStore";
+const houseStore = "houseStore";
 
 export default {
   name: "MemberJoin",
@@ -125,17 +159,72 @@ export default {
         username: null,
         email: null,
         userpwdcheck: null,
+        dongcodes: [],
       },
       defferentPwd: false,
       empty: false,
       aftercheck: false,
+      gugunCode: null,
+      sidoCode: null,
+      dongCode: null,
     };
+  },
+  created() {
+    this.CLEAR_SIDO_LIST();
+    this.getSido();
   },
   computed: {
     ...mapState(memberStore, ["registerUser", "checkid"]),
+    ...mapState(houseStore, ["sidos", "guguns", "dongs"]),
   },
   methods: {
     ...mapActions(memberStore, ["userRegister", "userIdCheck"]),
+    ...mapMutations(houseStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "SET_GUGUN_CODE",
+      "CLEAR_GUGUN_CODE",
+      "CLEAR_HOUSE_LIST",
+      "SET_DONG_CODE",
+      "CLEAR_DONG_CODE",
+    ]),
+    ...mapActions(houseStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getHouseList",
+    ]),
+    gugunList() {
+      this.CLEAR_HOUSE_LIST();
+      this.CLEAR_GUGUN_LIST();
+      this.CLEAR_GUGUN_CODE();
+      this.CLEAR_DONG_CODE();
+      this.gugunCode = null;
+      if (this.sidoCode) {
+        this.getGugun(this.sidoCode);
+      }
+    },
+    dongList() {
+      this.CLEAR_DONG_LIST();
+      this.dongCode = null;
+
+      console.log("this gugunCode", this.gugunCode);
+
+      if (this.gugunCode) {
+        this.SET_GUGUN_CODE(this.gugunCode);
+        this.getDong(this.gugunCode);
+      }
+    },
+    selectDong() {
+      console.log(this.dongCode);
+    },
+    addDong() {
+      this.user.dongcodes.push(this.dongCode);
+
+      console.log(this.user.dongcodes);
+    },
+
     async check() {
       if (this.user.userid == null) {
         this.empty = true;
@@ -164,6 +253,7 @@ export default {
       }
       this.check();
       if (!this.checkid) return;
+      console.log(this.user);
       await this.userRegister(this.user);
       if (this.registerUser) {
         this.$router.push({ name: "SignIn" });
