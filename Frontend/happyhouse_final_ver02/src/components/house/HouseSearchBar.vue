@@ -129,6 +129,11 @@ export default {
       this.$store.commit("loading", true, { root: true });
 
       if (this.dongCode) {
+        if (this.checked) {
+          this.gugunCode = this.dongCode.substr(0, 6);
+          this.SET_GUGUN_CODE(this.gugunCode);
+        }
+
         await this.getHouseList(this.dongCode);
         this.SET_DONG_CODE(this.dongCode);
       }

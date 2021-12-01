@@ -123,12 +123,12 @@ export default {
     ...mapMutations(memberStore, [
       "SET_IS_LOGIN",
       "SET_USER_INFO",
-      "CREAL_AREA_LIST",
+      "CLEAR_AREA_LIST",
     ]),
     onClickLogout() {
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
-      this.CREAL_AREA_LIST();
+      this.CLEAR_AREA_LIST();
       sessionStorage.removeItem("access-token");
       if (this.$route.path != "/") this.$router.push({ name: "Home" });
     },
