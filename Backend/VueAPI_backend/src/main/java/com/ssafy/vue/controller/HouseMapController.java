@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.vue.config.KeyConfig;
 import com.ssafy.vue.model.AptInfoDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -28,7 +29,12 @@ import io.swagger.annotations.ApiParam;
 public class HouseMapController {
 	
 	private final Logger logger = LoggerFactory.getLogger(HouseMapController.class);
-
+	
+//	static String KEY;
+//
+//	@Autowired
+//	private KeyConfig keyConfig;
+	
 	@Autowired
 	private HouseMapService haHouseMapService;
 	
@@ -60,6 +66,7 @@ public class HouseMapController {
 		String gugunName = list.get(0).getGugunName();
 		String lat = list.get(0).getLat();
 		String lng = list.get(0).getLng();
+
 		return new ResponseEntity<Map<String, String>>(haHouseMapService.getCrimeInGugun(sidoName, gugunName, lat, lng), HttpStatus.OK);
 	}
 	
@@ -77,7 +84,5 @@ public class HouseMapController {
 		String gugunName = sidoGugunList.get(0).getGugunName();
 		return new ResponseEntity<List<AptInfoDto>>(haHouseMapService.getAptListApi(sidoName, gugunName, LAWD_CD, DONG, NUM_OF_ROWS, PAGE_NO, DEAL_YMD), HttpStatus.OK);
 	}
-	
-
 	
 }

@@ -5,33 +5,38 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.ssafy.vue.config.KeyConfig;
+
+@Component
 public class CrimeApi {
+	
+	@Autowired
+	private KeyConfig keyConfig;
 
 	/** 범죄용 **/
 	static boolean isReady = false;
-	static final String serviceKey = "VouVavm1Pgk6asq4X6JmiMl5J8cx72IKSRipR%2BxxctP2C4sZJkLbnyLEdsRcd%2BZEzHn%2FVPl%2Boyo1A2xB76RxgQ%3D%3D";
+	static String serviceKey = "";
 	static final String PAGE = "1";
 	static final String PER_PAGE = "15";	//"47"; 원래는 이게 맞는데 list에 들어가는 최대 idx가 14더라
 	static List<Integer> searchCrimeNum = new ArrayList<Integer>();
 	static int totalSum = 0;
-	static String apiUrl = "https://api.odcloud.kr/api/15085726/v1/uddi:66542ecf-c470-4c09-80df-a08348e9e679?page=" + PAGE
-			+ "&perPage=" + PER_PAGE + "&serviceKey=" + serviceKey; // perpage / "&returnType=XML" / key
+	static String apiUrl = ""; // perpage / "&returnType=XML" / key
 
 //	static String[] crimeList = new String[] {"절도", "살인", "강도", "방화", "성폭력", "상해", "주거침입", "약취와 유인"};
 	
 	/** 인구조사용 **/
-	static final String consumer_key = "4373180bee9340f2a754";
-	static final String consumer_secret = "2d64146e7cbc458da813";
+	static String consumer_key = "";
+	static String consumer_secret = "";
 	static String accessToken;
 	static final String YEAR = "2020";
 	static int totalPopulation;
@@ -41,8 +46,22 @@ public class CrimeApi {
 
 	// 객체 생성시 exception 던지면 안된다고 빠꾸먹음
 	public static CrimeApi getCrimeApiInstance() /* throws Exception */ {
+//		setKey();
 		return crimeApi;
 	}
+	
+//	public CrimeApi(KeyConfig keyConfig) {
+//		super();
+//		this.keyConfig = keyConfig;
+//	}
+//
+//	void setKey() {
+//		serviceKey = keyConfig.getKey();
+//		consumer_key = keyConfig.getConsumer_key();
+//		consumer_secret = keyConfig.getConsumer_secret();
+//		apiUrl = "https://api.odcloud.kr/api/15085726/v1/uddi:66542ecf-c470-4c09-80df-a08348e9e679?page=" + PAGE
+//				+ "&perPage=" + PER_PAGE + "&serviceKey=" + serviceKey;
+//	}
 	
 	// test용 main
 //	public static void main(String[] args) throws Exception {
@@ -70,6 +89,8 @@ public class CrimeApi {
 		String jsonString = callApi(apiUrl);
 
 		JSONObject jObject = new JSONObject(jsonString);
+//		System.out.println(jObject.toString());
+
 		JSONArray jArray = jObject.getJSONArray("data");
 		
 		totalSum = 0;
@@ -107,7 +128,15 @@ public class CrimeApi {
 
 	// 범죄발생지 검색 가능여부, 위험도 단계(1~5 정도)	
 	public Map<String, String> getCrimeInGugun(String sidoName, String gugunName, String lat, String lng) throws Exception {
-
+		
+//		serviceKey = KEY;
+		serviceKey = keyConfig.getKey();
+		consumer_key = keyConfig.getConsumer_key();
+		consumer_secret = keyConfig.getConsumer_secret();
+//		System.out.println(keyConfig.getKey());
+		apiUrl = "https://api.odcloud.kr/api/15085726/v1/uddi:66542ecf-c470-4c09-80df-a08348e9e679?page=" + PAGE
+				+ "&perPage=" + PER_PAGE + "&serviceKey=" + serviceKey;
+				
 		if (!isReady) {
 			ready();
 			//return null; // 검색할 때 부를거면 지우고, 웹페이지 접속할 때 부를거면 놔두기

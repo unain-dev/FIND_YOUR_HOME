@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.vue.config.KeyConfig;
 import com.ssafy.vue.model.AptInfoDto;
 import com.ssafy.vue.model.HouseInfoDto;
 import com.ssafy.vue.model.SidoGugunCodeDto;
@@ -20,8 +21,18 @@ public class HouseMapServiceImpl implements HouseMapService {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	private AptApi aptApi = AptApi.getAptApiInstance();
-	private CrimeApi crimeApi = CrimeApi.getCrimeApiInstance();
+	@Autowired
+	private KeyConfig keyConfig;
+	
+//	private AptApi aptApi = AptApi.getAptApiInstance();
+//	private CrimeApi crimeApi = CrimeApi.getCrimeApiInstance();
+
+	
+	@Autowired
+	private AptApi aptApi;
+	
+	@Autowired
+	private CrimeApi crimeApi;
 	
 //	private static HouseMapService haHouseMapService = new HouseMapServiceImpl();
 //	public static HouseMapService getHouseMapServiceImplInstance() {

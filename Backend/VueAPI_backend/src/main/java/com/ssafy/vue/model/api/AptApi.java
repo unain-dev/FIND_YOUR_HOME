@@ -1,5 +1,6 @@
 package com.ssafy.vue.model.api;
 
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
@@ -18,18 +19,25 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.ssafy.vue.config.KeyConfig;
 import com.ssafy.vue.model.AptInfoDto;
 
-import java.io.BufferedReader;
-
-public class AptApi {
-
-	static final String API_KEY = "VouVavm1Pgk6asq4X6JmiMl5J8cx72IKSRipR%2BxxctP2C4sZJkLbnyLEdsRcd%2BZEzHn%2FVPl%2Boyo1A2xB76RxgQ%3D%3D";
+@Component
+public class AptApi{
+	
+	@Autowired
+	private KeyConfig keyConfig;
+	
+	static String API_KEY = "";
 	static final String dong = "2720010300";
 	static final String LAWD_CD = dong.substring(0, 5); // 지역 코드 5자리 - 구군 단위
 	static final String DONG = dong.substring(5); // 동 코드 10자리 - 뒤 5자리만 끊어서 법정동읍면동코드와 비교 필요
@@ -40,8 +48,8 @@ public class AptApi {
 	static final String sidoName = "대구광역시";
 	static final String gugunName = "서구";
 	
-	static final String GEO_API_KEY = "AIzaSyAL3eeb9P6jIliDv3dF5pox4z3HmhnJebo";
-	static final String KAKAO_MAP_API_KEY = "cfe77a3882d48223692d447d99eb8180";		// rest api key
+	static String GEO_API_KEY = "";
+	static String KAKAO_MAP_API_KEY = "";		// rest api key
 	
 	private static AptApi aptApi = new AptApi();
 	
@@ -49,9 +57,15 @@ public class AptApi {
 		return aptApi;
 	}
 	
+//	private static void setKey() {
+//		API_KEY = keyConfig.getKey();
+//	}
+
+	
 //	private HouseMapService haHouseMapService = HouseMapServiceImpl.getHouseMapServiceImplInstance();
 	
-//	@Autowired
+
+	//	@Autowired
 //	private SqlSession sqlSession;
 //	
 //	public List<SidoGugunCodeDto> getSidoByCode(String sidocode) throws Exception {
@@ -62,13 +76,14 @@ public class AptApi {
 //	public List<SidoGugunCodeDto> getGugunByCode(String guguncode) throws Exception {
 //		return sqlSession.getMapper(HouseMapMapper.class).getGugunByCode(guguncode);
 //	}
-	public List<AptInfoDto> getAptListApi(String LAWD_CD, String DONG, String NUM_OF_ROWS, String PAGE_NO, String DEAL_YMD) throws Exception {
-		
+	public List<AptInfoDto> getAptListApi(String LAWD_CD, String DONG, String NUM_OF_ROWS, String PAGE_NO, String DEAL_YMD) throws Exception {		
 		String apiData = getApiData(LAWD_CD, NUM_OF_ROWS, PAGE_NO, DEAL_YMD);
 		
 		NodeList dongList = xmlParsing(apiData, "//items/item/법정동읍면동코드");
 		Queue<Integer> dongAptNum = new LinkedList<Integer>();
-
+		
+//		System.out.println(apiData);
+		
 		for (int i = 0; i < dongList.getLength(); i++) {
 			NodeList dong = dongList.item(i).getChildNodes();
 			for (int j = 0; j < dong.getLength(); j++) {
@@ -84,6 +99,7 @@ public class AptApi {
 //		XPathExpression expr = xpath.compile("//items/item");
 		NodeList nodeList = xmlParsing(apiData, "//items/item");
 //		System.out.println(dongAptNum.size());
+		System.out.println("aptList");
 		while (!dongAptNum.isEmpty()) {
 			int num = dongAptNum.poll();
 			NodeList child = nodeList.item(num).getChildNodes();
@@ -138,6 +154,9 @@ public class AptApi {
 	}
 	
 	public List<AptInfoDto> getAptListApi(String sidoName, String gugunName, String LAWD_CD, String DONG, String NUM_OF_ROWS, String PAGE_NO, String DEAL_YMD) throws Exception {
+		API_KEY = keyConfig.getKey();
+		GEO_API_KEY = keyConfig.getGEO_API_KEY();
+		KAKAO_MAP_API_KEY = keyConfig.getKAKAO_MAP_API_KEY();
 		
 		String apiData = getApiData(LAWD_CD, NUM_OF_ROWS, PAGE_NO, DEAL_YMD);
 		
@@ -332,7 +351,7 @@ public class AptApi {
 //	    System.out.println(xmlString);
 	    return xmlString;
 	}
-	
+
 	
 //	public static void main(String[] args) throws Exception {
 //		AptApi api = AptApi.getAptApiInstance();
